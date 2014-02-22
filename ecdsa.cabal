@@ -1,5 +1,5 @@
 name:            ecdsa
-version:         0.1
+version:         0.1.1
 cabal-version:   >= 1.8
 license:         OtherLicense
 license-file:    COPYING
@@ -22,6 +22,9 @@ extra-source-files:
 library
         exposed-modules:
                 ECDSA
+
+        other-modules:
+                ECDSA.Util
 
         build-depends:
                 base == 4.*,
