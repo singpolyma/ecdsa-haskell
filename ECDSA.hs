@@ -5,8 +5,7 @@ module ECDSA (
 	sign,
 	publicFromPrivate,
 	publicToBytes,
-	signatureEncodeDER,
-	pmul
+	signatureEncodeDER
 ) where
 
 import Data.Bits
@@ -22,13 +21,13 @@ import Crypto.Util (bs2i, i2bs, i2bs_unsized)
 
 import ECDSA.Util
 
-sign :: (CryptoRandomGen g) => PrivateKey -> BS.ByteString -> g -> Either GenError ((Integer, Integer), g)
+sign :: (CryptoRandomGen g) => PrivateKey -> BS.ByteString -> g -> Either GenError (Signature, g)
 sign (PrivateKey curve@(CurveFP (CurvePrime _ (CurveCommon {ecc_g = g, ecc_n = n}))) d) hash gen = do
 	(bytes, gen') <- genBytes (lengthBytes n) gen
 	let k = (bs2i bytes `mod` (n-1)) + 1
 	let r = (\(Point x _) -> x) (pmul (curve, g) k) `mod` n
 	let s = ((bs2i hash + (r*d)) * modinv k n) `mod` n
-	return ((r,s), gen')
+	return (Signature r s, gen')
 	where
 sign _ _ _ = error "TODO: binary curves"
 
