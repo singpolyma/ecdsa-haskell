@@ -35,4 +35,4 @@ library
 
 source-repository head
         type:     git
-        location: git://github.com/singpolyma/hecc.git
+        location: git://github.com/singpolyma/ecdsa-haskell.git
